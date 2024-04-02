@@ -1,22 +1,38 @@
-import * as React from "react"
-import { Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
+import React from 'react'
+import { graphql } from 'gatsby'
 
-import Layout from "../components/layout"
-import Seo from "../components/seo"
-import * as styles from "../components/index.module.css"
+const IndexPage = ({ data }) => {
+  const spreadsheetData = data.allGoogleSheet.edges
 
-const IndexPage = () => (
-  <Layout>
-    <h1>Welcome to <b>Gatsby!</b></h1>
-  </Layout>
-)
+  return (
+    <div>
+      <h1>Data dari Spreadsheet</h1>
+      <ul>
+        {spreadsheetData.map(({ node }) => (
+          <li key={node.id}>
+            <p>Nama: {node.nama}</p>
+            <p>Usia: {node.usia}</p>
+            <p>Email: {node.email}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
-/**
- * Head export to define metadata for the page
- *
- * See: https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-head/
- */
-export const Head = () => <Seo title="Home" />
+export const query = graphql`
+  query {
+    allGoogleSheet {
+      edges {
+        node {
+          id
+          nama
+          usia
+          email
+        }
+      }
+    }
+  }
+`
 
 export default IndexPage
